@@ -1,6 +1,7 @@
 FROM scratch
-MAINTAINER Jonathan Dowland <jmtd@debian.org>
+MAINTAINER Simba Zhang <solderzzc@users.noreply.github.com>
 ADD root.tar /
+#ADD assets/qemu-arm-static /usr/bin/qemu-arm-static
 
 # Unfortunately we have to use codenames here rather than something more
 # static (stable/testing) because we wouldn't want the images to suddenly

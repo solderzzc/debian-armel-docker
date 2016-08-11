@@ -5,9 +5,9 @@
 #       sudo make release=wheezy arch=i386 tag=wheezy-i386
 
 # variables that can be overridden:
-release ?= jessie
-prefix  ?= jmtd
-arch    ?= amd64
+release ?= stretch
+prefix  ?= solderzzc
+arch    ?= armel
 mirror  ?= http://httpredir.debian.org/debian/
 tag     ?= $(release)-$(arch)
 
@@ -23,7 +23,8 @@ $(tag):
 
 $(tag)/root.tar: roots/$(tag)/etc $(tag)
 	cd roots/$(tag) \
-		&& tar -c --numeric-owner -f ../../$(tag)/root.tar ./
+		&& tar -c --numeric-owner -f ../../$(tag)/root.tar ./ \
+                && cp -rf ../../assets ./
 
 # slightly awkward indirection to avoid a bug whereby user runs
 # this unprivileged, creates the dir but debootstrap fails, but
@@ -33,7 +34,10 @@ roots/$(tag):
 	mkdir -p $@
 
 roots/$(tag)/etc: roots/$(tag)
-	debootstrap --arch $(arch) $(release) $< $(mirror) \
+	debootstrap --foreign  --arch $(arch) $(release) $< $(mirror) \
+                && cp assets/qemu-arm-static $</usr/bin/ \
+		&& DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true \
+ LC_ALL=C LANGUAGE=C LANG=C chroot $< /debootstrap/debootstrap --second-stage \
 		&& chroot $< apt-get clean
 
 clean:
