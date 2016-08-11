@@ -5,10 +5,10 @@
 #       sudo make release=wheezy arch=i386 tag=wheezy-i386
 
 # variables that can be overridden:
-release ?= stretch
+release ?= jessie
 prefix  ?= solderzzc
-arch    ?= armel
-mirror  ?= http://httpredir.debian.org/debian/
+arch    ?= armhf
+mirror  ?= http://archive.raspbian.org/raspbian
 tag     ?= $(release)-$(arch)
 
 build: $(tag)/root.tar $(tag)/Dockerfile
